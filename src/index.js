@@ -7,6 +7,7 @@
  */
 const express = require("express");
 const morgan = require("morgan");
+const { exec } = require("child_process");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -69,6 +70,20 @@ app.get("/api/v1/run", (req, res) => {
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
+});
+
+/**
+ * ⚠️ Intentionally insecure for CodeQL demo — DO NOT USE IN PROD
+ * Example: GET /api/v1/ping?host=example.com
+ * Attack:  /api/v1/ping?host=8.8.8.8;cat+/etc/passwd
+ */
+app.get("/api/v1/ping", (req, res) => {
+  const host = String(req.query.host || "");
+  // ❌ Command injection: concatenating untrusted input into a shell command
+  exec("ping -c 1 " + host, (err, stdout, stderr) => {
+    if (err) return res.status(400).json({ error: String(err) });
+    res.type("text/plain").send(stdout || stderr);
+  });
 });
 
 // Start server
