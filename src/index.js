@@ -43,6 +43,23 @@ app.post("/api/v1/echo", (req, res) => {
   });
 });
 
+/**
+ * ⚠️ Intentionally Insecure API for CodeQL test
+ * Do NOT use in production!
+ *
+ * Example: GET /api/v1/run?code=2+%2B+2
+ */
+app.get("/api/v1/run", (req, res) => {
+  const code = req.query.code;
+  try {
+    // ❌ Bad practice: direct eval of user input
+    const result = eval(code); 
+    res.json({ result });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);
