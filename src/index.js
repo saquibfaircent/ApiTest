@@ -44,6 +44,17 @@ app.post("/api/v1/echo", (req, res) => {
 });
 
 /**
+ * ⚠️ Insecure: hardcoded secret (for CodeQL testing only)
+ */
+const DB_PASSWORD = "SuperSecret123";
+
+const config = {
+  username: "admin",
+  password: "password123", // hardcoded password
+};
+
+
+/**
  * ⚠️ Intentionally Insecure API for CodeQL test
  * Do NOT use in production!
  *

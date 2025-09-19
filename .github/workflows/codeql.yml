@@ -26,8 +26,7 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: javascript
-          # You can add custom queries later:
-          # queries: security-extended,security-and-quality
+          queries: security-extended,security-and-quality
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
